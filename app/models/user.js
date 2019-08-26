@@ -6,6 +6,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  name: {
+    type: String
+  },
+  blogs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Blog'
+  }],
   hashedPassword: {
     type: String,
     required: true
