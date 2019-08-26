@@ -14,10 +14,13 @@ const blogSchema = new mongoose.Schema({
     required: true
   },
   comments: [{
+    // Blogs will have many comments owned by
+    // different users
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
   }],
   owner: {
+    // Indicates ownership from a single user
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
