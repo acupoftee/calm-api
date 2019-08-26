@@ -17,6 +17,15 @@ const BadCredentialsError = errors.BadCredentialsError
 
 const User = require('../models/user')
 
+const removeBlanks = require('../../lib/remove_blank_fields')
+
+// this is a collection of methods that help us detect situations when we need
+// to throw a custom error
+const customErrors = require('../../lib/custom_errors')
+
+// we'll use this function to send 404 when non-existant document is requested
+const handle404 = customErrors.handle404
+
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `res.user`
@@ -126,6 +135,18 @@ router.patch('/change-password', requireToken, (req, res, next) => {
     // respond with no content and status 200
     .then(() => res.sendStatus(204))
     // pass any errors along to the error handler
+    .catch(next)
+})
+
+// UPDATE
+// PATCH /users/5a7db6c74d55bc51bdf39793
+router.patch('/users/:id', requireToken, removeBlanks, (req, res, next) => {
+  User.findById(req.user.id)
+    .then(handle404)
+    .then(user => {
+      return user.update(req.user)
+    })
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 
