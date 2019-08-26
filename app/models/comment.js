@@ -5,11 +5,20 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  author: {
+    type: String,
+    required: true
+  },
   blog: {
+    // Each comment belongs to a specific blog
+    // Different users are still able to delete a comment
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Blog'
   },
   owner: {
+    // Indicates a User owning a Comment
+    // This allows a User to delete a comment in a blog
+    // they don't own
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
