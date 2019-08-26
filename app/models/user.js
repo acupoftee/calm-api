@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String
   },
+  isAdmin: {
+    // added for content review privlages
+    type: Boolean,
+    default: false
+  },
   hashedPassword: {
     type: String,
     required: true
