@@ -18,7 +18,6 @@ const BadCredentialsError = errors.BadCredentialsError
 const User = require('../models/user')
 
 const removeBlanks = require('../../lib/remove_blank_fields')
-
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
 const customErrors = require('../../lib/custom_errors')
@@ -138,7 +137,7 @@ router.patch('/change-password', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// UPDATE
+// UPDATE (for admin privileges only)
 // PATCH /users/5a7db6c74d55bc51bdf39793
 router.patch('/users/:id', requireToken, removeBlanks, (req, res, next) => {
   User.findById(req.user.id)
