@@ -11,6 +11,19 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  avatarUrl: {
+    type: String,
+    required: true,
+    default: 'https://gamepedia.cursecdn.com/overwatch_gamepedia/1/15/PI_Orisa_Protector.png'
+  },
+  displayName: {
+    type: String,
+    required: true,
+    default: 'New User'
+  },
+  summary: {
+    type: String
+  },
   hashedPassword: {
     type: String,
     required: true
