@@ -48,7 +48,7 @@ This will be the MVP for a blogging platform called *Central African Lifestyle M
 
 # Technologies and Workflow
 * Express using `calm-api`
-* React using `react-template`
+* React using `react-auth-template`
 * Node
 * MongoDB
 * Mongoose
