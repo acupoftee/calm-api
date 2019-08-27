@@ -28,7 +28,9 @@ const handle404 = customErrors.handle404
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `res.user`
-const requireToken = passport.authenticate('bearer', { session: false })
+const requireToken = passport.authenticate('bearer', {
+  session: false
+})
 
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
@@ -42,8 +44,8 @@ router.post('/sign-up', (req, res, next) => {
     // the password is an empty string
     .then(credentials => {
       if (!credentials ||
-          !credentials.password ||
-          credentials.password !== credentials.password_confirmation) {
+        !credentials.password ||
+        credentials.password !== credentials.password_confirmation) {
         throw new BadParamsError()
       }
     })
@@ -60,7 +62,9 @@ router.post('/sign-up', (req, res, next) => {
     .then(user => User.create(user))
     // send the new user object back with status 201, but `hashedPassword`
     // won't be send because of the `transform` in the User model
-    .then(user => res.status(201).json({ user: user.toObject() }))
+    .then(user => res.status(201).json({
+      user: user.toObject()
+    }))
     // pass any errors along to the error handler
     .catch(next)
 })
@@ -72,7 +76,9 @@ router.post('/sign-in', (req, res, next) => {
   let user
 
   // find a user based on the email that was passed
-  User.findOne({ email: req.body.credentials.email })
+  User.findOne({
+    email: req.body.credentials.email
+  })
     .then(record => {
       // if we didn't find a user with that email, send 401
       if (!record) {
@@ -100,7 +106,9 @@ router.post('/sign-in', (req, res, next) => {
     })
     .then(user => {
       // return status 201, the email, and the new token
-      res.status(201).json({ user: user.toObject() })
+      res.status(201).json({
+        user: user.toObject()
+      })
     })
     .catch(next)
 })
@@ -112,7 +120,9 @@ router.patch('/change-password', requireToken, (req, res, next) => {
   // `req.user` will be determined by decoding the token payload
   User.findById(req.user.id)
     // save user outside the promise chain
-    .then(record => { user = record })
+    .then(record => {
+      user = record
+    })
     // check that the old password is correct
     .then(() => bcrypt.compare(req.body.passwords.old, user.hashedPassword))
     // `correctPassword` will be true if hashing the old password ends up the
@@ -143,9 +153,33 @@ router.patch('/users/:id', requireToken, removeBlanks, (req, res, next) => {
   User.findById(req.user.id)
     .then(handle404)
     .then(user => {
-      return user.update(req.user)
+      if (req.user.isAdmin || req.user.id === user._id) {
+        return user.update(req.user)
+      }
     })
     .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+// SHOW
+// GET /users/5a7db6c74d55bc51bdf39793
+router.get('/users/:id', (req, res, next) => {
+  // req.params.id will be set based on the `:id` in the route
+  User.findById(req.params.id)
+    .populate('blogs')
+    .then(handle404)
+    // if `findById` is succesful, respond with 200 and "user" JSON
+    .then(user => {
+      res.status(200).json({
+        user: {
+          email: user.email,
+          summary: user.summary,
+          displayName: user.displayName,
+          avatarUrl: user.avatarUrl
+        }
+      })
+    })
+    // if an error occurs, pass it to the handler
     .catch(next)
 })
 
