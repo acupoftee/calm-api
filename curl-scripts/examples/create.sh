@@ -11,7 +11,7 @@ curl "${API}${URL_PATH}" \
   --data '{
     "example": {
       "text": "'"${TEXT}"'",
-      "title": "'"${TITLE}"'"
+      "title": "'"${TITLE}"'",
     }
   }'
 
