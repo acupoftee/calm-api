@@ -150,11 +150,12 @@ router.patch('/change-password', requireToken, (req, res, next) => {
 // UPDATE (for admin privileges only)
 // PATCH /users/5a7db6c74d55bc51bdf39793
 router.patch('/users/:id', requireToken, removeBlanks, (req, res, next) => {
-  User.findById(req.user.id)
+  User.findById(req.params.id)
     .then(handle404)
     .then(user => {
-      if (req.user.isAdmin || req.user.id === user._id) {
-        return user.update(req.user)
+      console.log(req.params.id === user._id.toString())
+      if (user.isAdmin || req.user.id === user._id.toString()) {
+        return user.update(req.body.user)
       }
     })
     .then(() => res.sendStatus(204))
@@ -172,6 +173,7 @@ router.get('/users/:id', (req, res, next) => {
     .then(user => {
       res.status(200).json({
         user: {
+          _id: user._id,
           email: user.email,
           summary: user.summary,
           displayName: user.displayName,

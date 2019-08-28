@@ -1,6 +1,6 @@
 #!/bin/bash
 
-API="http://localhost:4741"
+API="http://calm-app.herokuapp.com"
 URL_PATH="/blogs"
 
 curl "${API}${URL_PATH}" \
