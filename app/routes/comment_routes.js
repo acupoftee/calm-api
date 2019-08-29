@@ -47,7 +47,7 @@ router.get('/comments', (req, res, next) => {
 
 // SHOW
 // GET /comments/5a7db6c74d55bc51bdf39793
-router.get('/comments/:id', requireToken, (req, res, next) => {
+router.get('/comments/:id', (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Comment.findById(req.params.id)
     .populate('blog')
@@ -64,19 +64,20 @@ router.post('/comments', requireToken, (req, res, next) => {
   // set owner of new comment to be current user
   req.body.comment.owner = req.user.id
   let blogId = req.body.comment.blog
-  let comment = req.body.comment
+  // let comment = req.body.comment
   Comment.create(req.body.comment)
     // respond to succesful `create` with status 201 and JSON of new "comment"
-    .then(comment => {
+    .then(newComment => {
       Blog.findById(blogId)
         .then(foundBlog => {
-          foundBlog.comments.push(comment._id)
+          foundBlog.comments.push(newComment)
           let blog = foundBlog
           return foundBlog.update(blog)
         })
+      return newComment
     })
-    .then(() => {
-      res.status(201).json({comment})
+    .then(newComment => {
+      res.status(201).json(newComment.toObject())
     })
     // if an error occurs, pass it off to our error handler
     // the error handler needs the error message and the `res` object so that it
@@ -115,6 +116,14 @@ router.delete('/comments/:id', requireToken, (req, res, next) => {
     .then(comment => {
       // throw an error if current user doesn't own `comment`
       requireOwnership(req, comment)
+      let blogId = comment.blog
+      Blog.findById(blogId)
+        .then(foundBlog => {
+          const index = foundBlog.comments.indexOf(req.params.id)
+          foundBlog.comments.splice(index, 1)
+          let blog = foundBlog
+          return foundBlog.update(blog)
+        })
       // delete the comment ONLY IF the above didn't throw
       comment.remove()
     })

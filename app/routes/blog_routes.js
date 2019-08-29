@@ -47,7 +47,10 @@ router.post('/blogs', requireToken, (req, res, next) => {
 // index
 router.get('/blogs', (req, res, next) => {
   Blog.find()
-    .populate('comments')
+    // .populate('owner')
+    .populate({
+      path: 'comments'
+    })
     .then(blogs => {
       // `blogs` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
