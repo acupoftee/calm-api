@@ -47,7 +47,7 @@ The following user stories were stretch goals that have been implemented in the 
 
 <h3>ERD</h3>
 <p align="center">
-<img src="https://media.git.generalassemb.ly/user/21060/files/58a39880-c7e7-11e9-92a5-bf1ff2333e22" alt="Capstone ERD" title="Capstone ERD" height="400">
+<img src="https://i.imgur.com/eFQCuNy.png" alt="Capstone ERD" title="Capstone ERD" height="400">
 </p>
 
 # Wireframes
