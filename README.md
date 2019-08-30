@@ -1,5 +1,9 @@
-# 🌱🌍 Central African Lifestyle Magazine (CALM)
-This project will be a simple blog platform where users can **read** blogs, **write** a blog, **update** a blog, and **delete** a user owned blog.
+<p align="center">
+<img src="https://i.imgur.com/kdZi2v6.png" alt="CALM logo" title="CALM" height="250">
+</p>
+
+# About CALM
+This project will be a blog platform where users can **read** blogs, **write** a blog, **update** a blog, and **delete** a user owned blog.
 
 This will be the MVP for a blogging platform called *Central African Lifestyle Magazine (CALM)*. This aims to provide culturally sensitive health, wellness, and lifestyle advice for young women of Central African descent. This project will be continued as a contracted project with my client going forward.
 
