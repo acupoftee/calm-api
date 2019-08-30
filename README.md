@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://i.imgur.com/kdZi2v6.png" alt="CALM logo" title="CALM" height="250">
+<img src="https://i.imgur.com/sNLi2jk.png" alt="CALM logo" title="CALM" height="250">
 </p>
 
 # About CALM
